@@ -1,4 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -12,8 +14,9 @@ public class User {
     private String name;
     private String lastname;
     private int age;
-
+    @NotNull
     private String password;
+    @NotNull
     private String username;
 
     public String getPassword() {
@@ -32,7 +35,7 @@ public class User {
         this.username = username;
     }
 
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -48,6 +51,9 @@ public class User {
     }
     public User() {}
 
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
     public Collection<Role> getRoles() {
         return roles;
     }
