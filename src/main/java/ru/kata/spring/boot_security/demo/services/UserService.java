@@ -22,7 +22,7 @@ public class UserService implements UserDetailsService {
 
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -39,13 +39,9 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not founs " + username));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAutorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
-    private Collection<? extends SimpleGrantedAuthority> mapRolesToAutorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
-    public List<Role> listRoles() {return roleRepository.findAll();}
     public List<User> list() {
         return userRepository.findAll();
     }

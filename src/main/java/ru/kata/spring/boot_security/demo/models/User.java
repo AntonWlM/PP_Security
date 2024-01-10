@@ -1,12 +1,16 @@
 package ru.kata.spring.boot_security.demo.models;
 import com.sun.istack.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails, GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +23,11 @@ public class User {
     @NotNull
     private String username;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    }
+
     public String getPassword() {
         return password;
     }
@@ -29,6 +38,26 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setUsername(String username) {
@@ -51,8 +80,8 @@ public class User {
     }
     public User() {}
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Role roles) {
+        this.roles.add(roles);
     }
     public Collection<Role> getRoles() {
         return roles;
@@ -87,5 +116,10 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    @Override
+    public String getAuthority() {
+        return null;
     }
 }
