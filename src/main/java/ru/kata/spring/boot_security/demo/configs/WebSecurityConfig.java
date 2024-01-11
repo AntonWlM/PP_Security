@@ -7,11 +7,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import ru.kata.spring.boot_security.demo.services.UserServiceImp;
 
 @Configuration
 @EnableWebSecurity
@@ -32,16 +30,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index")
-                .authenticated()
+                .antMatchers("/login").authenticated()
                 .antMatchers("admin/**").hasRole("ADMIN")
-                .antMatchers("user/**").hasAnyRole("ADMIN","USER")
+                .antMatchers("user/user").hasAnyRole("ADMIN","USER")
                 .and()
-                .formLogin().successHandler(successUserHandler)
-                .permitAll()
+                .formLogin()
+                .successHandler(successUserHandler)
                 .and()
-                .logout()
-                .permitAll();
+                .logout().logoutSuccessUrl("/");
+
+
+
     }
 
     // аутентификация inMemory

@@ -31,7 +31,7 @@ public class User implements UserDetails {
 
     @NotNull
     private String username;
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -48,7 +48,7 @@ public class User implements UserDetails {
     public User() {}
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList());
     }
     public void setPassword(String password) {
         this.password = password;
@@ -57,40 +57,28 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(username, user.username);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(username);
-    }
-
     public String getUsername() {
         return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return false;
     }
 
     public void setUsername(String username) {

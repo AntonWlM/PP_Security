@@ -6,12 +6,12 @@
 </head>
 <body>
 <p>Создать пользователя</p>
+<!--/*@thymesVar id="user" type="ru.kata.spring.boot_security.demo.models.User"*/-->
 <form th:method="POST" th:action="save" th:object="${user}">
-    <input type="hidden" th:field="*{id}"/>
     <label for="name">Enter name</label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
-    <label for="lastname">Enter lastname</label>
+    <label for="lastName">Enter lastname</label>
     <input type="text" th:field="*{lastname}" id="lastName"/>
     <br/>
     <label for="age">Enter age</label>
@@ -20,15 +20,20 @@
     <label for="username">Enter username</label>
     <input type="text" th:field="*{username}" id="username"/>
     <br/>
-    <label for="password">Enter password</label>
+    <label for="age">Enter password</label>
     <input type="text" th:field="*{password}" id="password"/>
     <br/>
-        </p>
-    </form>
 
+    <label>Roles:
+        <input type="checkbox" name="roles"
+               th:each="role : ${roles}"
+               th:text="${role.getName()}"
+               th:value="${role.getId()}"
+               th:field="*{roles}"/>
+
+    </label>
     <input type="submit" value="Create"/>
+    <p>< /p>
+        <a href="/logout">LOGOUT</a>
 </form>
-<hr/>
-<a href="/logout">LOGOUT</a>
 </body>
-</html>

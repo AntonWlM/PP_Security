@@ -11,8 +11,6 @@ import java.util.List;
 
 
 public interface UserService extends UserDetailsService {
-    @Override
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     User findUserByUsername(String username);
 
@@ -23,6 +21,4 @@ public interface UserService extends UserDetailsService {
     User find(Long id);
 
     void delete(Long id);
-
-
 }
