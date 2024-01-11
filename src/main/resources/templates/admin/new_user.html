@@ -9,7 +9,6 @@
 <form th:method="POST" th:action="save" th:object="${user}">
     <label for="name">Enter name</label>
     <input type="text" th:field="*{name}" id="name"/>
-
     <br/>
     <label for="lastName">Enter lastname</label>
     <input type="text" th:field="*{lastname}" id="lastName"/>
@@ -23,6 +22,15 @@
     <label for="age">Enter password</label>
     <input type="text" th:field="*{password}" id="password"/>
     <br/>
+
+    <label>Roles:
+        <input type="checkbox" name="roles"
+               th:each="role : ${roles}"
+               th:text="${role.getName()}"
+               th:value="${role.getId()}"
+               th:field="*{roles}"/>
+
+    </label>
     <input type="submit" value="Create"/>
 </form>
 </body>

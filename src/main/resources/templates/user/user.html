@@ -16,16 +16,17 @@
 
     </tr>
     </tbody>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
+
+
     <tr th:each="user : ${user}">
 
         <td th:text="${user.getName()}"></td>
         <td th:text="${user.getLastname()}"></td>
         <td th:text="${user.getAge()}"></td>
-
+>
     </tr>
-
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
 </table>
 
 <a href="/logout">LOGOUT</a>
